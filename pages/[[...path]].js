@@ -10,7 +10,8 @@ import CommonMeta from '../components/CommonMeta'
 import marked from 'marked';
 
 //const baseUrl = 'https://demo-api.druxtjs.org'
-const baseUrl = 'http://192.168.1.77/drupal9/'
+//const baseUrl = 'http://192.168.1.77/drupal9/'
+const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 function Route(ctx) {
   const router = useRouter()
@@ -81,15 +82,32 @@ function Route(ctx) {
 }
 
 export async function getServerSideProps({ query, res }) {
-  const router = new DruxtRouter(baseUrl)
+  const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
+  
+  const router = new DruxtRouter(baseUrl,{
+      axios: {
+        headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+      },
+      endpoint: 'jsonapi'
+  })
   const path = ((query || {}).path || []).join('/')
   const { redirect, route } = await router.get(`/${path}`)
   if (redirect) {
     return { props: { redirect } }
   }
 
-  const druxt = new DruxtClient(baseUrl)
-  const druxtSchema = new DruxtSchema(baseUrl)
+  const druxt = new DruxtClient(baseUrl,{
+    axios: {
+      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+    },
+    endpoint: 'jsonapi'
+  })
+  const druxtSchema = new DruxtSchema(baseUrl,{
+    axios: {
+      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+    },
+    endpoint: 'jsonapi'
+  })
 
   switch (route.type) {
     case 'entity': {
