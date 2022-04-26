@@ -5,8 +5,12 @@ import { DruxtSchema } from 'druxt-schema'
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
+import CommonMeta from '../components/CommonMeta'
+import marked from 'marked';
 
 //const baseUrl = 'https://demo-api.druxtjs.org'
+//const baseUrl = 'http://192.168.1.77/drupal9/'
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 function Route(ctx) {
@@ -15,29 +19,27 @@ function Route(ctx) {
     useEffect(() => router.push(ctx.redirect))
     return (<p>Redirecting...</p>)
   }
-
   switch ((ctx.route || {}).type) {
     case 'entity': {
       const { entity, schema } = ctx
       const { attributes, relationships } = entity.data
 
-      return (
+      return (<>
+      <CommonMeta title="About" description="This is About page." />
         <div>
+        <p><Link href={'/'}>HOME</Link></p>
+        <div className="container-fluid">
           <h1>{attributes.title}</h1>
-          {((schema || {}).fields || []).map((field) => (
-            <dl key={field.id}>
-              <dt>Field ID</dt>
-              <dd>{field.id}</dd>
-
-              <dt>Data</dt>
-              <dd>{JSON.stringify(attributes[field.id] || relationships[field.id])}</dd>
-
-              <dt>Schema:</dt>
-              <dd>{JSON.stringify(field)}</dd>
-            </dl>
-          ))}
-        </div>
-      )
+          <div className="row row-eq-height">
+            <div className="card-base col-lg-3 col-sm-6 p-1">
+            <div className="card">
+            <div className="card-body">
+            <div dangerouslySetInnerHTML={attributes.body && { __html: marked(attributes.body.value)}} />
+            </div>
+            </div>
+            </div>
+          </div></div></div>
+      </>)
     }
 
     case 'views': {
@@ -48,34 +50,31 @@ function Route(ctx) {
         ? attributes.display[displayId]
         : merge(attributes.display.default, attributes.display[displayId])
 
-      return (
-        <div>
+      return (<>
+      <CommonMeta title="About" description="This is About page." />
+        <div className="container-fluid">
           <h1>{attributes.label}</h1>
+          <div className="row row-eq-height">
+            {results.data.map(entity => (
+            <div key={entity.id} className="card-base col-lg-3 col-sm-6 p-1">
+            <div className="card">
+            <div className="card-body">
+            <p>{entity.attributes.title}</p>
+            <p>{entity.type}</p>
+            <p>{entity.id}</p>
+            </div>
+            <div className="card-footer">
+            <Link href={'/drupal9'+entity.attributes.path.alias}>{entity.attributes.path.alias}</Link>
+            </div>
+            </div>
+            </div>
 
-          <dl>
-            <dt>Results</dt>
-            <dd>{results.data.map(entity => (
-
-              <dl key={entity.id}>
-                <dt>Title</dt>
-                <dd>{entity.attributes.title}</dd>
-
-                <dt>Type</dt>
-                <dd>{entity.type}</dd>
-
-                <dt>UUID</dt>
-                <dd>{entity.id}</dd>
-
-                <dt>Path</dt>
-                <dd><Link href={entity.attributes.path.alias}>{entity.attributes.path.alias}</Link></dd>
-              </dl>
-            ))}</dd>
-
-            <dt>Display options</dt>
-            <dd>{JSON.stringify(display)}</dd>
-          </dl>
+            ))}
+            </div>
+            <dt>{/*Display options*/}</dt>
+            <dd>{/*JSON.stringify(display)*/}</dd>
         </div>
-      )
+        </>)
     }
   }
 
@@ -84,30 +83,31 @@ function Route(ctx) {
 
 export async function getServerSideProps({ query, res }) {
   const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
+  
   const router = new DruxtRouter(baseUrl,{
+      axios: {
+        headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+      },
+      endpoint: 'jsonapi'
+  })
+  const path = ((query || {}).path || []).join('/')
+  const { redirect, route } = await router.get(`/${path}`)
+  if (redirect) {
+    return { props: { redirect } }
+  }
+
+  const druxt = new DruxtClient(baseUrl,{
     axios: {
       headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
     },
     endpoint: 'jsonapi'
-})
-const path = ((query || {}).path || []).join('/')
-const { redirect, route } = await router.get(`/${path}`)
-if (redirect) {
-  return { props: { redirect } }
-}
-
-const druxt = new DruxtClient(baseUrl,{
-  axios: {
-    headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-  },
-  endpoint: 'jsonapi'
-})
-const druxtSchema = new DruxtSchema(baseUrl,{
-  axios: {
-    headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-  },
-  endpoint: 'jsonapi'
-})
+  })
+  const druxtSchema = new DruxtSchema(baseUrl,{
+    axios: {
+      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+    },
+    endpoint: 'jsonapi'
+  })
 
   switch (route.type) {
     case 'entity': {
