@@ -78,7 +78,7 @@ function Route(ctx) {
     }
   }
 
-  return (<div>Error: Nothing here! : {[[...path]]}</div>)
+  return (<div>Error: Nothing here!</div>)
 }
 
 export async function getServerSideProps({ query, res }) {
