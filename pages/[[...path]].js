@@ -27,7 +27,7 @@ function Route(ctx) {
       return (<>
       <CommonMeta title="About" description="This is About page." />
         <div>
-        <p><Link href={'/'}>HOME</Link></p>
+        <p><Link href={'/home'}>HOME</Link></p>
         <div className="container-fluid">
           <h1>{attributes.title}</h1>
           <div className="row row-eq-height">
