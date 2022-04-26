@@ -6,7 +6,8 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const baseUrl = 'https://demo-api.druxtjs.org'
+//const baseUrl = 'https://demo-api.druxtjs.org'
+const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 function Route(ctx) {
   const router = useRouter()
