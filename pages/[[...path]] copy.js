@@ -6,8 +6,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import CommonMeta from '../components/CommonMeta'
-import marked from 'marked';
+import CommonMeta from './CommonMeta'
 
 //const baseUrl = 'https://demo-api.druxtjs.org'
 const baseUrl = 'http://192.168.1.77/drupal9/'
@@ -30,13 +29,17 @@ function Route(ctx) {
         <div className="container-fluid">
           <h1>{attributes.title}</h1>
           <div className="row row-eq-height">
-            <div className="card-base col-lg-3 col-sm-6 p-1">
+          {((schema || {}).fields || []).map((field) => (
+            <div key={field.id} className="card-base col-lg-3 col-sm-6 p-1">
             <div className="card">
             <div className="card-body">
-            <div dangerouslySetInnerHTML={attributes.body && { __html: marked(attributes.body.value)}} />
+            <p>Field ID:{field.id}</p>
+            <p>Data:{JSON.stringify(attributes[field.id] || relationships[field.id])}</p>
+            <p>Schema:{JSON.stringify(field)}</p>
             </div>
             </div>
             </div>
+          ))}
           </div></div></div>
       </>)
     }
