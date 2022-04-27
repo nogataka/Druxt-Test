@@ -82,6 +82,7 @@ function Route(ctx) {
 }
 
 export async function getServerSideProps({ query, res }) {
+  console.log("query1："+JSON.stringify(query))
   const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
   
   const router = new DruxtRouter(baseUrl,{
