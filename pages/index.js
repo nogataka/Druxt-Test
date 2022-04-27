@@ -13,14 +13,23 @@ import marked from 'marked';
 //const baseUrl = 'http://192.168.1.77/drupal9/'
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
-export async function getServerSideProps(context) {
-  console.log("DEBUG99999")
-  return {
-    props: {}
-  }
+export async function getServerSideProps({ query, res }) {
+  const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
+  const router = new DruxtRouter(baseUrl,{
+    axios: {
+      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
+    },
+    endpoint: 'jsonapi'
+  })
+  //console.log(JSON.stringify(router));
+  const { redirect, route } = await router.get("/")
+  console.log(route.type);
+  return { props: { route } }
 }
 
-export default function Home() {
+export default function Home(ctx) {
+  console.log((ctx.route || {}).type || "NGNG");
+  
   return (
     <div className="container">
       <Head>
