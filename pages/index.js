@@ -1,41 +1,13 @@
-import merge from 'deepmerge'
-import { DruxtClient } from 'druxt'
-import { DruxtRouter } from 'druxt-router'
-import { DruxtSchema } from 'druxt-schema'
-import { useEffect } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
-import CommonMeta from '../components/CommonMeta'
-import marked from 'marked';
 
-//const baseUrl = 'https://demo-api.druxtjs.org'
-//const baseUrl = 'http://192.168.1.77/drupal9/'
-const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 export async function getServerSideProps() {
   return { props: { "data":"TEST" } }
 }
 
-/*
-export async function getServerSideProps({ query, res }) {
-  const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
-  const router = new DruxtRouter(baseUrl,{
-    axios: {
-      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-    },
-    endpoint: 'jsonapi'
-  })
-  //console.log(JSON.stringify(router));
-  const { redirect, route } = await router.get("/")
-  console.log(route.type);
-  return { props: { route } }
-}
-*/
 
-export default function Home(ctx) {
-  console.log((ctx.route || {}).type || "NGNG");
-  
+export default function Home() {
+
   return (
     <div className="container">
       <Head>
