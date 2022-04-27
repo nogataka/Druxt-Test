@@ -93,7 +93,8 @@ export async function getServerSideProps({ query, res }) {
   const path = ((query || {}).path || []).join('/')
   const { redirect, route } = await router.get(`/${path}`)
 
-  console.info(`/${path}`)
+  //console.info(`/${path}`)
+  console.log(`/${path}`)
   if (redirect) {
     return { props: { redirect } }
   }
