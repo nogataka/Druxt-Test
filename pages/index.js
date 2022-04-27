@@ -1,10 +1,10 @@
 import Head from 'next/head'
 
-
+/*
 export async function getServerSideProps() {
   return { props: { "data":"TEST" } }
 }
-
+*/
 
 export default function Home() {
 
