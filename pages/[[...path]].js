@@ -76,6 +76,14 @@ function Route(ctx) {
         </div>
         </>)
     }
+
+    default:
+        return(
+        <div>
+          <p>default</p>
+          <p>PATH: "{router.pathname}"</p>
+        </div>
+      )
   }
 
   return (<div>Error: Nothing here!</div>)
