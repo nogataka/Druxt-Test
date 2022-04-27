@@ -76,14 +76,6 @@ function Route(ctx) {
         </div>
         </>)
     }
-
-    default:
-        return(
-        <div>
-          <p>default</p>
-          <p>PATH: "{router.pathname}"</p>
-        </div>
-      )
   }
 
   return (<div>Error: Nothing here!</div>)
@@ -100,6 +92,8 @@ export async function getServerSideProps({ query, res }) {
   })
   const path = ((query || {}).path || []).join('/')
   const { redirect, route } = await router.get(`/${path}`)
+
+  console.info(`/${path}`)
   if (redirect) {
     return { props: { redirect } }
   }
@@ -139,7 +133,7 @@ export async function getServerSideProps({ query, res }) {
       return { props: { displayId, view, results, route } }
     }
   }
-
+  console.info('OKOKOK')
   return { props: { route } }
 }
 
