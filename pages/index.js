@@ -13,13 +13,7 @@ import marked from 'marked';
 //const baseUrl = 'http://192.168.1.77/drupal9/'
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
-export async function getServerSideProps(context) {
-  console.log("DEBUG99999")
-  const data = await fetch('...').then((res) => res.json())
-  return {
-    props: data
-  }
-}
+
 
 export default function Home() {
   return (
