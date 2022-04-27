@@ -14,62 +14,14 @@ import marked from 'marked';
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 export async function getServerSideProps(context) {
-  const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
-  
-  const router = new DruxtRouter(baseUrl,{
-      axios: {
-        headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-      },
-      endpoint: 'jsonapi'
-  })
-
-  const { redirect, route } = await router.get('/')
-  if (redirect) {
-    return { props: { redirect } }
+  console.log("DEBUG99999")
+  const data = await fetch('...').then((res) => res.json())
+  return {
+    props: data
   }
-
-  const druxt = new DruxtClient(baseUrl,{
-    axios: {
-      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-    },
-    endpoint: 'jsonapi'
-  })
-  const druxtSchema = new DruxtSchema(baseUrl,{
-    axios: {
-      headers: {'X-Custom-Header': true,'Authorization': `Basic ${token}`},
-    },
-    endpoint: 'jsonapi'
-  })
-
-  switch (route.type) {
-    case 'entity': {
-      const { type, uuid } = route.props
-      const [entityType, bundle] = type.split('--')
-
-      const [entity, { schema }] = await Promise.all([
-        druxt.getResource(type, uuid),
-        druxtSchema.getSchema({ entityType, bundle })
-      ])
-
-      return { props: { entity, route, schema }}
-    }
-
-    case 'views': {
-      const { displayId, type, uuid, viewId } = route.props
-      const [view, results] = await Promise.all([
-        druxt.getResource(type, uuid),
-        druxt.getResource(`views--${viewId}`, displayId)
-      ])
-      return { props: { displayId, view, results, route } }
-    }
-  }
-  console.info('OKOKOK')
-  return { props: { route } }
 }
 
-export default function Home(ctx) {
-  switch ((ctx.route || {}).type) {
-    case 'views': {
+export default function Home() {
   return (
     <div className="container">
       <Head>
@@ -118,6 +70,4 @@ export default function Home(ctx) {
       </main>
     </div>
   )
-  }
-}
 }
