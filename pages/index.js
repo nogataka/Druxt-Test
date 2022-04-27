@@ -13,6 +13,11 @@ import marked from 'marked';
 //const baseUrl = 'http://192.168.1.77/drupal9/'
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
+export async function getServerSideProps() {
+  return { props: { "data":"TEST" } }
+}
+
+/*
 export async function getServerSideProps({ query, res }) {
   const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
   const router = new DruxtRouter(baseUrl,{
@@ -26,6 +31,7 @@ export async function getServerSideProps({ query, res }) {
   console.log(route.type);
   return { props: { route } }
 }
+*/
 
 export default function Home(ctx) {
   console.log((ctx.route || {}).type || "NGNG");
