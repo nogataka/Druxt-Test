@@ -14,6 +14,9 @@ import marked from 'marked';
 const baseUrl = 'https://panatech.c1x.biz/drupal9/'
 
 function Route(ctx) {
+  if(!ctx) {
+    return (<div>NULL OBJ!</div>)
+  }
   const router = useRouter()
   if (ctx.redirect) {
     useEffect(() => router.push(ctx.redirect))
