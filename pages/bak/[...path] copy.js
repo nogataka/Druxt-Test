@@ -30,7 +30,7 @@ function Route(ctx) {
       return (<>
       <CommonMeta title="About" description="This is About page." />
         <div>
-        <p><Link href={'/home'}>HOME</Link></p>
+        <p><Link href={'/'}>HOME</Link></p>
         <div className="container-fluid">
           <h1>{attributes.title}</h1>
           <div className="row row-eq-height">
@@ -84,6 +84,7 @@ function Route(ctx) {
   return (<div>Error: Nothing here!</div>)
 }
 
+
 export async function getServerSideProps({ query, res }) {
   console.log("query2："+JSON.stringify(query))
   const token = 'cGFuYXNvbmljOnByb2N0b3Jz'
@@ -98,7 +99,7 @@ export async function getServerSideProps({ query, res }) {
   const { redirect, route } = await router.get(`/${path}`)
 
   //console.info(`/${path}`)
-  console.log(`/${path}`)
+  console.log("path2: "+path)
   if (redirect) {
     return { props: { redirect } }
   }
