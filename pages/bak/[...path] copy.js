@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import CommonMeta from '../components/CommonMeta'
+import CommonMeta from '../../components/CommonMeta'
 import marked from 'marked';
 
 //const baseUrl = 'https://demo-api.druxtjs.org'
